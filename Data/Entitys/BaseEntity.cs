@@ -1,10 +1,11 @@
 namespace Data.Entitys.Base;
 
-public class BaseEntity<TEntity>:IBaseEntity
+public abstract class BaseEntity<TKey>:IBaseEntity
 {
-    public TEntity Id { get; set; }
+    public TKey Id { get; set; }
 }
-public class BaseEntity: BaseEntity<int>
+public abstract
+    class BaseEntity: BaseEntity<int>
 {
     
 }

@@ -6,17 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 
-public class StoreContext(DbContextOptions option):DbContext(option)
+public class StoreContext(DbContextOptions<StoreContext> option):DbContext(option)
 {
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         var asm = typeof(IBaseEntity).Assembly;
         
-        modelBuilder.AddEntities<IBaseEntity>(asm);
+        modelBuilder.AddEntities<BaseEntity>(asm);
         modelBuilder.ApplyConfigurationsFromAssembly(asm);
-      
+        base.OnModelCreating(modelBuilder);
     }
-    
 }

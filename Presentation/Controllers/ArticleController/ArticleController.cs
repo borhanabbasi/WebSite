@@ -1,7 +1,9 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Data.AutoMaper;
 using Data.Entitys.BaseEntity;
 using Data.Repositorys;
+using Data.Repositorys.Article;
 using Data.Repositorys.GenericRepository;
 using Microsoft.AspNetCore.Components.Forms.Mapping;
 using Microsoft.AspNetCore.Mvc;
@@ -11,22 +13,13 @@ using WebApplication1.Models.Article;
 namespace WebApplication1.Controllers.ArticleController;
 [ApiController]
 [Route("[Controller]/[action]")]
-public class ArticleController(IRepositoryGeneric<Article> _articlerepository,IMapper _mapper) : ControllerBase
+public class ArticleController(IArticleRepository _articlerepository,IMapper _mapper) : ControllerBase
 {
     // List<ArticleSelectDto> models;
     [HttpGet]
     public  ActionResult<List<ArticleSelectDto>>  GetAllArticle()
     {
-        
-        // var mmmm=_articlerepository.GetAll();
-        // foreach (var item in mmmm)
-        // {
-        //    var i= _mapper.Map<ArticleSelectDto>(item);
-        //    models.Add(i);
-        // }
-        //
-        // return models;
-        var model = _articlerepository.TableNoTracking.ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider);
+        var model = _articlerepository.TableNoTracking.ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider).ToList();
         return Ok(model);
     }
     [HttpGet]
@@ -34,30 +27,36 @@ public class ArticleController(IRepositoryGeneric<Article> _articlerepository,IM
     {
         var item = _articlerepository.TableNoTracking
             .ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider).FirstOrDefault(p=>p.Id==id);
+        if (item == null)
+            return NotFound();
         return Ok(item);
     }
     [HttpPost]
     public  ActionResult<ArticleSelectDto> CreateArticle(ArticleDto dto)
     {
        var model= _mapper.Map<Article>(dto);
-        _articlerepository.Add(model);
-       // return Ok(_mapper.Map<ArticleSelectDto>(model)) ;
-       var item = _articlerepository.TableNoTracking.ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider)
-           .FirstOrDefault(p => p.Id == model.Id);  
-        return Ok(item);
+       var res= _articlerepository.Add(model).Result;
+       var item = _mapper.Map<ArticleSelectDto>(res);
+       // var item = _articlerepository.TableNoTracking.ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider)
+       //     .FirstOrDefault(x => x.Id == model.Id);
+        return Ok(_mapper.Map<ArticleSelectDto>(item));
     }
     [HttpDelete]
-    public  ActionResult<ArticleSelectDto> RemoveArticle(int id)
+    public  IActionResult RemoveArticle(int id)
     {
-        _articlerepository.Remove(id);
         var item = _articlerepository.TableNoTracking.ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider)
-            .FirstOrDefault(p => p.Id == id);  
-        return Ok(item);
+            .FirstOrDefault(x => x.Id == id);
+        if (item == null)
+            return NotFound();
+        _articlerepository.Remove(id);
+        return Ok();
     }
     [HttpPut]
     public  ActionResult<ArticleSelectDto> EditeArticle(ArticleDto dto)
     {
         var model= _mapper.Map<Article>(dto);
+        if (model == null)
+            return NotFound();
         _articlerepository.Update(model);
         var item = _articlerepository.TableNoTracking.ProjectTo<ArticleSelectDto>(_mapper.ConfigurationProvider)
             .FirstOrDefault(p => p.Id ==dto.Id);  

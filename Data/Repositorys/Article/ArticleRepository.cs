@@ -3,8 +3,5 @@ using Data.Repositorys.GenericRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositorys;
-using Data.Entitys;
-public class ArticleRepository(DbContext context) :RepositoryGeneric<Entitys.BaseEntity.Article>(context),IArticleRepository
-{
-    
-}
+using Data.Entitys.BaseEntity;
+public class ArticleRepository(StoreContext context) :RepositoryGeneric<Entitys.BaseEntity.Article>(context),IArticleRepository;

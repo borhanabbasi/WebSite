@@ -6,13 +6,13 @@ using Data.Entitys.BaseEntity;
 
 namespace Data.Entitys.Base;
 
-public class User:BaseEntity<Guid>
+public class User:BaseEntity
 {
-    public string name{ get; set; }
-    public String address { get; set; }
-    public String  username { get; set; }
-    public String  pasword { get; set; }
-    public String  phone { get; set; }
+    public string? Name { get; set; } = "";
+    public String Address { get; set; }
+    public String  Username { get; set; }
+    public String  Pasword { get; set; }
+    public String  Phone { get; set; }
 
 
     public List<Order> Orders { get; set; }
@@ -27,6 +27,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(p => p.Orders).WithOne(p => p.User);
         builder.HasOne<ProductBelove>(p => p.ProductBelove).WithOne(p => p.User);
         builder.HasOne<ProductBasket>(p => p.ProductBasket).WithOne(p => p.User);
+            
         
     }
 }

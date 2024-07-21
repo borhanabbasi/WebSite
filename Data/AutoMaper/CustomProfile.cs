@@ -1,6 +1,7 @@
 using System.Reflection;
 using AutoMapper;
 using Core;
+using Data.Entitys.BaseEntity;
 
 namespace Data.AutoMaper;
 
@@ -13,8 +14,10 @@ public class CustomProfile:Profile
                                          && typeof(IHaveCustomMaping).IsAssignableFrom(p));
         
         
+        
         foreach (var type in typeDtos)
         {
+            
             var creatMapping = Activator.CreateInstance(type) as IHaveCustomMaping;
             creatMapping!.ApplyMaping(this);
         }

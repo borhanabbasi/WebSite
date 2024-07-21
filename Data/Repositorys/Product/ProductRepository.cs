@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositorys.Product;
 
-public class ProductRepository(DbContext context) :RepositoryGeneric<Entitys.BaseEntity.Product>(context),IProductRepository
+public class ProductRepository(StoreContext context) :RepositoryGeneric<Entitys.BaseEntity.Product>(context),IProductRepository
 {
     
 }

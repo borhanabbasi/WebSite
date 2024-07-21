@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositorys.Order;
 
-public class OrderRepository(DbContext context) :RepositoryGeneric<Entitys.BaseEntity.Order>(context),IOrderRepository
+public class OrderRepository(StoreContext context) :RepositoryGeneric<Entitys.BaseEntity.Order>(context),IOrderRepository
 {
     
 }

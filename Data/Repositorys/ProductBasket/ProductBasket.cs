@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositorys.ProductBasket;
 
-public class ProductBasket(DbContext context) :RepositoryGeneric<ProductBasket>(context),IProductBasket
+public class ProductBasket(StoreContext context) :RepositoryGeneric<ProductBasket>(context),IProductBasket
 {
     
 }

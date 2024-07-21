@@ -1,11 +1,16 @@
+using AutoMapper;
+using Core;
 using Data.AutoMaper;
 
 namespace WebApplication1.Models.User;
 
-public class UserSelectDto:BaseDto<int,UserSelectDto,Data.Entitys.Base.User>
+public class UserSelectDto:IHaveCustomMaping
 {
-    public Guid Id { get; set; }
-    public string name{ get; set; }
-    public String address { get; set; }
-    public String  phone { get; set; }
+    public string? Name { get; set; } = "";
+    public String Address { get; set; }
+    public String  Phone { get; set; }
+    public void ApplyMaping(Profile customProfile)
+    {
+        customProfile.CreateMap<UserSelectDto, Data.Entitys.Base.User>().ReverseMap();
+    }
 }
